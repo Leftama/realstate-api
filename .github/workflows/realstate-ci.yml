@@ -1,47 +1,66 @@
 name: API CI - RealEstate
 
 on:
- push:
-  branches: [main]
- pull_request:
-  branches: [main]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
- test:
-   name: Test API en Node.js ${{ matrix.node }}
-   runs-on: ubuntu-latest
- 
-   strategy:
-     matrix:
-      node: [16.x, 18.x]
-
-   steps:
-    - name: Checkout del código
-      uses: actions/checkout@v3
-
-    - name: Configurar Node.js
-      uses: actions/setup-node@v3
-      with:
-       node-version: ${{ matrix.node }}
- 
-    - name: Cachear dependencias npm
-      uses: actions/cache@v3
-      with:
-       path: ~/.npm
-       key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-       restore-keys: | 
-         ${{ runner.os }}-node-
-
-    - name: Instalar dependencias
-      run: npm ci
-  
-    - name: Ejecutar pruebas con Jest
-      run: npm test
-  
-    - name: Reportar éxito
-      if: success()
-      run: echo " API funcional en Node ${{ matrix.node }}"
- 
-    - name: Reportar error
-      if: failure()
-      run: echo " Falla detectada en los tests para Node ${{ matrix.node }}"
+  test:
+    name: Test API en Node.js ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    strategy:
+      matrix:
+        node: [16.x, 18.x]
+      fail-fast: false  # Permite que continúe aunque falle una versión
+    
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+      
+      - name: Configurar Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'npm'
+      
+      - name: Verificar versión de Node y npm
+        run: |
+          node --version
+          npm --version
+      
+      - name: Limpiar cache de npm (si es necesario)
+        run: npm cache clean --force
+      
+      - name: Instalar dependencias
+        run: npm ci
+      
+      - name: Verificar instalación
+        run: npm list --depth=0
+      
+      - name: Ejecutar pruebas con Jest
+        run: npm test
+        env:
+          NODE_ENV: test
+      
+      - name: Generar reporte de cobertura
+        if: success()
+        run: |
+          if npm run test:coverage 2>/dev/null; then
+            echo "📊 Cobertura generada exitosamente"
+          else
+            echo "ℹ️  Script de cobertura no disponible"
+          fi
+      
+      - name: Reportar éxito
+        if: success()
+        run: echo "✅ API funcional en Node ${{ matrix.node }}"
+      
+      - name: Reportar error
+        if: failure()
+        run: |
+          echo "❌ Falla detectada en los tests para Node ${{ matrix.node }}"
+          echo "💡 Revisa los logs anteriores para más detalles"

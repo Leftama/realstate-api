@@ -126,6 +126,40 @@ npm test           # Ejecuta las pruebas
 npm run test:watch # Ejecuta las pruebas en modo watch
 ```
 
+---
+
+## Principales mejoras implementadas
+
+### 1. Configuración de estrategia robusta
+
+```yaml
+strategy:
+  matrix:
+    node: [16.x, 18.x]
+  fail-fast: false  # Permite que continúe aunque falle una versión
+  ```
+
+### 2. Actualización de actions
+
+```yaml
+actions/checkout@v4 y actions/setup-node@v4 (versiones más estables)
+cache: 'npm' integrado en setup-node para mejor performance
+```
+
+### 3. Timeout de seguridad
+
+```yaml
+timeout-minutes: 10
+```
+
+### 4. Verificaciones adicionales
+
+- Verificación de versiones de Node y npm
+- Limpieza de cache si es necesario
+- Verificación de instalación correcta
+
+---
+
 ## Próximas características
 
 - [ ] Endpoint para obtener inmueble por ID
