@@ -32,7 +32,7 @@ realstate-api/
 1. Clona el repositorio:
 
 ```bash
-git clone <url-del-repositorio>
+git clone git@github.com:Leftama/realstate-api.git
 cd realstate-api
 ```
 
