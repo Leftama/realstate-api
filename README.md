@@ -160,16 +160,44 @@ timeout-minutes: 10
 
 ---
 
-## Próximas características
+## Preguntas Finales
 
-- [ ] Endpoint para obtener inmueble por ID
-- [ ] Endpoint para crear nuevos inmuebles
-- [ ] Endpoint para actualizar inmuebles
-- [ ] Endpoint para eliminar inmuebles
-- [ ] Filtros por tipo y rango de precios
-- [ ] Paginación de resultados
-- [ ] Validación de datos de entrada
-- [ ] Conexión a base de datos
+### Múltiples entornos de Node.js
+
+- Garantiza compatibilidad entre versiones
+- Detecta breaking changes tempranamente
+- Cubre el ecosistema real de usuarios
+
+### Validación de salida de API
+
+- Previene regresiones y errores silenciosos
+- Mantiene contratos de API consistentes
+- Proporciona confianza en el despliegue
+
+### Despliegue a producción
+
+- Pipeline completo con build, pruebas, seguridad y despliegue por etapas
+- Estrategias como blue-green deployment
+- Monitoreo y capacidad de rollback
+
+### Limitaciones de GitHub Actions
+
+- Tiempo de ejecución, concurrencia y recursos limitados
+- Soluciones prácticas con paralelización, cache y self-hosted runners
+- Estrategias híbridas para casos complejos
+
+---
+
+## Estrategias generales para mitigar limitaciones
+
+- **Uso híbrido:** Combinar GitHub Actions con otras herramientas (Jenkins, GitLab CI) para casos específicos
+- **Optimización de workflows:** Usar conditional steps, early exits y parallel execution
+Monitoreo proactivo: Implementar alertas para detectar problemas antes de que afecten el desarrollo
+- **Backup plans:** Tener estrategias alternativas para casos críticos (self-hosted runners, servicios externos)
+
+Estas limitaciones no son bloqueantes para la mayoría de proyectos, pero conocerlas permite diseñar workflows más robustos y eficientes.
+
+---
 
 ## Contribución
 
